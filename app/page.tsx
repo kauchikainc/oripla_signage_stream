@@ -10,6 +10,7 @@ export default function Home() {
   const [isConnected, setIsConnected] = useState(false);
   const [syncTime, setSyncTime] = useState(0);
   const [lastSyncTimestamp, setLastSyncTimestamp] = useState(0);
+  const [isMuted, setIsMuted] = useState(true); // ミュート状態
 
   useEffect(() => {
     // Server-Sent Eventsで同期状態を受信
@@ -91,6 +92,14 @@ export default function Home() {
     }
   };
 
+  // ミュート切り替え
+  const toggleMute = () => {
+    setIsMuted(!isMuted);
+    if (videoRef.current) {
+      videoRef.current.muted = !isMuted;
+    }
+  };
+
   return (
     <div className="min-h-screen bg-black flex flex-col items-center justify-center p-4">
       {/* 接続状態インジケーター */}
@@ -105,6 +114,29 @@ export default function Home() {
         </span>
       </div>
 
+      {/* ミュート解除ボタン */}
+      <button
+        onClick={toggleMute}
+        className="absolute top-4 left-1/2 -translate-x-1/2 flex items-center space-x-2 text-white bg-black/70 hover:bg-black/90 px-6 py-3 rounded-full backdrop-blur-sm transition-all shadow-lg"
+      >
+        {isMuted ? (
+          <>
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2" />
+            </svg>
+            <span className="font-medium">音声をONにする</span>
+          </>
+        ) : (
+          <>
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
+            </svg>
+            <span className="font-medium">音声ON</span>
+          </>
+        )}
+      </button>
+
       {/* 動画プレーヤー */}
       <div className="w-full max-w-6xl">
         <video
@@ -114,7 +146,7 @@ export default function Home() {
           onLoadedMetadata={handleLoadedMetadata}
           onEnded={handleEnded}
           playsInline // iOS対応
-          muted // 自動再生のためミュート
+          muted={isMuted} // ミュート状態を制御
           loop={false} // ループはhandleEndedで制御
         >
           お使いのブラウザは動画タグをサポートしていません。
