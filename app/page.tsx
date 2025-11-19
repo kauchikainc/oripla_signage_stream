@@ -101,41 +101,31 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen bg-black flex flex-col items-center justify-center p-4">
-      {/* 接続状態インジケーター */}
-      <div className="absolute top-4 right-4 flex items-center space-x-2 text-white bg-black/50 px-4 py-2 rounded-lg backdrop-blur-sm">
-        <div
-          className={`w-3 h-3 rounded-full ${
-            isConnected ? 'bg-green-500' : 'bg-red-500'
-          } animate-pulse`}
-        />
-        <span className="text-sm font-medium">
-          {isConnected ? '同期中' : '接続待機中'}
-        </span>
-      </div>
+    <div className="min-h-screen bg-black flex flex-col items-center justify-center p-8 gap-6">
+      {/* ヘッダー部分 */}
+      <div className="w-full max-w-6xl flex justify-between items-center mb-4">
+        {/* タイトル */}
+        <div className="text-white">
+          <h1 className="text-2xl font-bold drop-shadow-lg">
+            同期動画プレーヤー
+          </h1>
+          <p className="text-sm text-white/80 mt-1">
+            複数デバイス間で同期再生
+          </p>
+        </div>
 
-      {/* ミュート解除ボタン */}
-      <button
-        onClick={toggleMute}
-        className="absolute top-4 left-1/2 -translate-x-1/2 flex items-center space-x-2 text-white bg-black/70 hover:bg-black/90 px-6 py-3 rounded-full backdrop-blur-sm transition-all shadow-lg"
-      >
-        {isMuted ? (
-          <>
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2" />
-            </svg>
-            <span className="font-medium">音声をONにする</span>
-          </>
-        ) : (
-          <>
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
-            </svg>
-            <span className="font-medium">音声ON</span>
-          </>
-        )}
-      </button>
+        {/* 接続状態インジケーター */}
+        <div className="flex items-center space-x-2 text-white bg-black/50 px-4 py-2 rounded-lg backdrop-blur-sm">
+          <div
+            className={`w-3 h-3 rounded-full ${
+              isConnected ? 'bg-green-500' : 'bg-red-500'
+            } animate-pulse`}
+          />
+          <span className="text-sm font-medium">
+            {isConnected ? '同期中' : '接続待機中'}
+          </span>
+        </div>
+      </div>
 
       {/* 動画プレーヤー */}
       <div className="w-full max-w-6xl">
@@ -151,9 +141,35 @@ export default function Home() {
         >
           お使いのブラウザは動画タグをサポートしていません。
         </video>
+      </div>
+
+      {/* コントロール部分 */}
+      <div className="w-full max-w-6xl flex flex-col items-center gap-4">
+        {/* ミュート解除ボタン */}
+        <button
+          onClick={toggleMute}
+          className="flex items-center space-x-2 text-white bg-black/70 hover:bg-black/90 px-6 py-3 rounded-full backdrop-blur-sm transition-all shadow-lg"
+        >
+          {isMuted ? (
+            <>
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2" />
+              </svg>
+              <span className="font-medium">音声をONにする</span>
+            </>
+          ) : (
+            <>
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
+              </svg>
+              <span className="font-medium">音声ON</span>
+            </>
+          )}
+        </button>
 
         {/* デバッグ情報 */}
-        <div className="mt-4 text-white/60 text-xs text-center space-y-1">
+        <div className="text-white/60 text-xs text-center space-y-1">
           <p>同期時刻: {syncTime.toFixed(2)}秒</p>
           <p>
             現在の再生位置: {videoRef.current?.currentTime.toFixed(2) || '0.00'}秒
@@ -162,16 +178,6 @@ export default function Home() {
             ※複数のデバイスで開くと、すべてのデバイスが同じ位置で再生されます
           </p>
         </div>
-      </div>
-
-      {/* タイトル */}
-      <div className="absolute top-4 left-4 text-white">
-        <h1 className="text-2xl font-bold drop-shadow-lg">
-          同期動画プレーヤー
-        </h1>
-        <p className="text-sm text-white/80 mt-1">
-          複数デバイス間で同期再生
-        </p>
       </div>
     </div>
   );
